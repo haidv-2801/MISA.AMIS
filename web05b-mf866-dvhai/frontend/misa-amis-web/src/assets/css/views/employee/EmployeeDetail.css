@@ -1,0 +1,156 @@
+.popup__form {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  height: 615px;
+  background-color: #fff;
+  width: 900px;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  margin: auto;
+  box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
+  z-index: var(--z-index-mid);
+  transition: all .2s;
+}
+
+.icon-src {
+  cursor: pointer;
+  background: url("../../../img/Sprites.64af8f61.svg") no-repeat;
+}
+
+.form__head {
+  position: relative;
+  padding: 20px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 73px;
+  width: 100%;
+}
+
+.head__left {
+  display: flex;
+  align-items: center;
+}
+
+.head__right {
+  position: absolute;
+  display: inherit;
+  right: 12px;
+  top: 12px;
+}
+
+.checkbox-option {
+  padding: 0px 20px;
+  display: flex;
+}
+
+.checkbox-text {
+  padding-left: 10px;
+}
+
+.head__title {
+  font-size: 24px;
+  color: #111;
+  font-weight: 700;
+  font-family: NotosanBold;
+}
+
+.form__body {
+  padding: 0px 32px;
+  flex: 1;
+}
+
+.body__top {
+  display: flex;
+  height: 207px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.body__topleft {
+  padding-right:13px;
+  flex: 1;
+  height: 100%;
+}
+
+.body__topright {
+  padding-left:13px;
+  flex: 1;
+  height: 100%;
+}
+
+.body__bottom {
+  width: 100%;
+  height: 225px;
+}
+
+.form__bottom {
+  height: 36px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* icon */
+.icon-help {
+  background-position: -89px -144px;
+}
+
+.icon-close {
+  background-position: -144px -144px;
+}
+
+.mg-r-6-px {
+  margin-right: 6px;
+}
+
+/* btn */
+.bgcolor-fff {
+  background-color: #fff;
+}
+
+.btn-save {
+  margin: 0px 10px;
+}
+
+.btn-save-add {
+  padding: 8px 20px;
+}
+
+.body-row {
+  flex: 1;
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.row__item label {
+  font-family: NotosanSemibold;
+  display: block;
+  line-height: 21px;
+}
+
+.row__item {
+  width: fit-content;
+}
+
+.width-100pt {
+  width: 100%;
+}
+
+.color-red {
+  color: red;
+}
+
+.separate {
+  bottom: -15px;
+  position: relative;
+  width: 100%;
+  border-top: 1px solid #e0e0e0;
+}

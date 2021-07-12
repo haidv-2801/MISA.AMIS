@@ -1,0 +1,388 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Font của website */
+@font-face {
+  font-family: "NotosanRegular";
+  src: url(../../font/notosans-regular.2cb88a13.woff2);
+}
+
+@font-face {
+  font-family: "NotosanBold";
+  src: url(../../font/notosans-bold.3ede5aff.woff2);
+}
+
+@font-face {
+  font-family: "NotosanItalic";
+  src: url(../../font/notosans-italic.1c1aaac9.woff2);
+}
+
+@font-face {
+  font-family: "NotosanSemibold";
+  src: url(../../font/notosans-semibold.df3e6dc4.woff2);
+}
+
+/* chung */
+:root {
+  --color-great: #2ca01c;
+  --color-main-background: #f4f5f8;
+  --color-border-input: #babec5;
+
+  /* dùng cho utility trong row */
+  --size-top: 20px;
+
+  --z-index-low: 0;
+  --z-index-mid: 1000;
+  --z-index-overlay: 1000;
+  --z-index-high: 2000;
+  --z-index-veryhight: 3001;
+}
+
+/* header root */
+:root {
+  --size-header-height: 48px;
+}
+
+/* sidebar root*/
+:root {
+  /* màu */
+  --color-sidebar-text: #fff;
+  --color-sidebar-background: #393a3d;
+  --color-sidebar-border-left: #393a3d;
+  --color-sidebar-item-hover: #616164;
+  /* cỡ */
+  --size-sidebar-font: 13px;
+  --size-sidebar-width: 178px;
+  --size-sidebar-width-collappsed: 52px;
+}
+
+body,
+html {
+  overflow: hidden;
+  color: #111;
+  font-size: 13px;
+  font-weight: 400;
+  font-family: NotosanRegular, Open Sans local;
+}
+
+/* header */
+.region__icon--toggle {
+  background: url("../../img/Sprites.64af8f61.svg") no-repeat;
+  width: 24px;
+  height: 24px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-default {
+  cursor: default;
+}
+
+.tick-box {
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 2px;
+  border: 1px solid rgb(175, 175, 175);
+}
+
+.tickbox-40 {
+  position: sticky;
+  position: -webkit-sticky;
+  left: 0;
+  width: 40px;
+  z-index: 0;
+}
+
+
+.icon-arrow-down {
+  background-position: -1123px -357px;
+}
+
+.icon-18 {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+}
+
+.icon-16 {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+}
+
+.icon-24 {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+}
+
+.icon-toggle {
+  background-position: -843px -30px;
+}
+
+.icon-toggle-white {
+  background: url("../../img/Sprites.64af8f61.svg") no-repeat;
+  background-position: -312px -32px;
+}
+
+.icon-toggle-active {
+  background-position: -316px -37px;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,.4);;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  z-index: var(--z-index-overlay);
+  transform: all .25s ease;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.notValidControl {
+  border: 1px solid red !important;
+}
+
+/* loader css */
+#loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  opacity: 0.7;
+  /* background-color: #fff; */
+  z-index: 19999;
+  text-align: center;
+}
+
+#loading-image {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 4000;
+}
+
+.hide {
+  display: none;
+}
+
+/* style thanh scroll */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #bbbbbb;
+  border-radius: 10px;
+}
+
+/* ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b8bcc3;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+} */
+
+/* font size,style */
+
+.focus:focus-visible {
+  border: 1px solid var(--color-great);
+}
+
+/* button */
+.btn {
+  transition: all .2s ease;
+  outline: none;
+  border: none;
+  font-family: NotosanRegular;
+  height: 36;
+  border-radius: 3px;
+  white-space: nowrap;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.padding-left-10 {
+  padding-left: 10px;
+}
+
+.btn-h-36 {
+  height: 36px;
+}
+
+.btn-size-default {
+  padding: 8px 20px;
+}
+
+.btn-border-default {
+  border: 1px solid #8d9096 !important;
+}
+
+.btn-border-default:hover {
+  background-color: #d2d3d6;
+}
+
+.btn-green {
+  background-color: var(--color-great);
+  color: #fff;
+}
+
+.btn-green:hover {
+  background-color: rgb(50, 182, 32);
+}
+
+.btn-green:active {
+  background-color: rgb(41, 151, 25);
+}
+
+/* transition */
+/* slide */
+.slide-leave-active,
+.slide-enter-active {
+  transition: all 0.5s ease;
+}
+
+.slide-enter,
+.slide-leave-to {
+  transform: translateY(-50%);
+  opacity: 0; 
+}
+
+.slide-fade-enter-active {
+  transition: transform 0.25s ease;
+}
+.slide-fade-leave-active {
+  transition: transform 0s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateY(10px);
+  opacity: 0;
+}
+
+/* fade */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+/* dxdatebox */
+.dx-state-focused {
+  border: 1px solid var(--color-great) !important;
+}
+
+.dx-calendar-selected-date {
+  background-color: var(--color-great) !important;
+}
+
+.dx-calendar-navigator
+  .dx-calendar-caption-button.dx-button
+  .dx-button-content {
+  color: var(--color-great) !important;
+}
+
+.dx-calendar-cell.dx-calendar-selected-date.dx-calendar-contoured-date,
+.dx-calendar-cell.dx-calendar-selected-date.dx-calendar-today.dx-calendar-contoured-date {
+  -webkit-box-shadow: inset 0 0 0 1px #bebebe,
+    inset 0 0 0 1000px var(--color-great) !important;
+  box-shadow: inset 0 0 0 1px #bebebe, inset 0 0 0 1000px var(--color-great) !important;
+}
+
+.dx-button .dx-icon {
+  color: var(--color-great) !important;
+}
+
+.dx-datebox-calendar .dx-dropdowneditor-icon {
+  border-radius: 0 !important;
+}
+
+.dx-datebox .dx-texteditor-input {
+  padding: 6px 0px 6px 10px !important;
+}
+
+.dx-widget input, .dx-widget textarea {
+  font-family: NotosanRegular !important;
+}
+
+.dx-datebox .dx-placeholder {
+  font-size: 13px;
+  font-family: NotosanRegular;
+}
+
+.dx-state-active {
+  border: 1px solid var(--color-great) !important;
+}
+
+input.dx-texteditor-input::placeholder {
+  font-size: 13px !important;
+}
+
+.dx-placeholder {
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+
+/* tooltip */
+.tooltip {
+  position: relative;
+  --isVisible: visibility;
+}
+
+.tooltip[tooltiptext]:hover:after {
+  border-radius: 1px;
+  /* font-family: NotosanRegular; */
+  visibility: var(--isVisible);
+  content: attr(tooltiptext);
+  z-index: 2000;
+  position: absolute;
+  width: fit-content;
+  white-space: nowrap;
+  top: calc(100% + 5px);
+  left: 20px;
+  color: #fff;
+  padding: 5px 6px;
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.7);
+}

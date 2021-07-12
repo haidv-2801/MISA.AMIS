@@ -1,0 +1,31 @@
+.rotate {
+    background-image: url(../../icon/arrow-up.svg) !important;
+}
+
+/* main css */
+.main {
+    flex-direction: column;
+    display: flex;
+    padding: 0px 16px 10px 16px;
+    flex: 1;
+    width: 100%;
+    background-color: var(--color-main-background);
+}
+
+/* table  */
+.align-right {
+    text-align: right;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.selected-row {
+    background-color: #e3f3ee !important;
+}
+
+/* body index */
+.body-index {
+    background-color: #fff;
+}
