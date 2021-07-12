@@ -1,7 +1,7 @@
 
 import Resource from '../../scripts/common/resource.js'
 import Enumeration from '../../scripts/common/enumeration.js'
-
+//debugger; // eslint-disable-line no-debugger
 var CommonFn = CommonFn || {}; 
 
 //Băm giá trị

@@ -254,6 +254,9 @@ import CommonFn from '../../../scripts/common/common';
 //Khởi tạo trạng thái ban đầu
 function initState() {
   return {
+    //Nếu validate client bị bỏ qua, thằng này sẽ sử lý
+    validateAddServer: true,
+
     //Dùng theo màn hình
     entityName: 'nhân viên',
 
@@ -462,7 +465,7 @@ export default {
     this.$bus.on('updateOriginModel', (key, value) => {
       this.employeeOrigin[key] = value;
     });
-    
+
     //Lắng nghe sự kiện xem tất cả các trường validate thế nào
     this.$bus.on('validateResult', (value) => {
       this.validateResult.push(value);
@@ -644,7 +647,10 @@ export default {
       try {
         await this.save();
         //Nếu không có lỗi thì đóng form
-        if (this.validateResult.length == 0) this.closeForm();
+        if (this.validateResult.length == 0 && this.validateAddServer == true) {
+          this.closeForm();
+          this.validateAddServer = false;
+        }
       } catch (e) {
         this.openFormError({ error: Resource.MsgReponse.MisaMsgError });
       }
@@ -657,10 +663,11 @@ export default {
     async saveAndClear() {
       try {
         await this.save();
-          if (this.validateResult.length == 0) {
-            this.employeeModel = {};
-            await this.getNewEmployeeCode();
-          }
+        if (this.validateResult.length == 0 && this.validateAddServer == true) {
+          this.validateAddServer = false;
+          this.employeeModel = {};
+          await this.getNewEmployeeCode();
+        }
       } catch (e) {
         this.openFormError({ error: Resource.MsgReponse.MisaMsgError });
       }
@@ -706,6 +713,7 @@ export default {
     async add() {
       await EmployeeAPI.insert(this.employeeModel)
         .then((response) => {
+          this.validateAddServer = true;
           console.log(response);
 
           //Làm mới dữ liệu
@@ -719,8 +727,15 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          //Mở message thất bại
-          this.openFormError({ error: Resource.MsgReponse.MisaMsgError });
+          //Validate trên server
+          this.validateAddServer = false;
+
+          if (error.response.status == Enumeration.HttpStatusCode.BadRequest) {
+            this.openFormWarning({ error: error.response.data.data });
+          } else {
+            //Mở message thất bại
+            this.openFormError({ error: Resource.MsgReponse.MisaMsgError });
+          }
         })
         .finally(() => {
           //Đóng loader
@@ -735,10 +750,14 @@ export default {
      * Sửa bản ghi
      * DVHAI 08/07/2021
      */
-   async edit() {
-      await EmployeeAPI.update(this.employeeModel.employeeId, this.employeeModel)
+    async edit() {
+      await EmployeeAPI.update(
+        this.employeeModel.employeeId,
+        this.employeeModel
+      )
         .then((response) => {
           console.log(response);
+          this.validateAddServer = true;
           this.refreshGrid();
           //Mở  toast message thành công
           this.$bus.emit('openToast', {
@@ -748,8 +767,13 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          //Mở message thất bại
-          this.openFormError({ error: Resource.MsgReponse.MisaMsgError });
+           this.validateAddServer = false;
+          if (error.response.status == Enumeration.HttpStatusCode.BadRequest) {
+            this.openFormWarning({ error: error.response.data.data });
+          } else {
+            //Mở message thất bại
+            this.openFormError({ error: Resource.MsgReponse.MisaMsgError });
+          }
         })
         .finally(() => {
           this.$store.commit('SET_LOADER', false);
@@ -806,15 +830,15 @@ export default {
      */
     async validateAll() {
       //Khi bấm nút thêm hoặc sửa cho phép validate tất cả
+      this.validateAddServer = true;
+
       this.$store.commit('SET_HASVALIDATE', true);
       this.validateResult = [];
       var elValidate = this.$refs.formGroup.querySelectorAll('[MustValidate]');
-
       for (const el of elValidate) {
         await el.querySelector('.focus').focus();
         await el.querySelector('.focus').blur();
       }
-
       if (this.validateResult.length == 0) {
         await this.checkUnique(this.employeeModel);
       }

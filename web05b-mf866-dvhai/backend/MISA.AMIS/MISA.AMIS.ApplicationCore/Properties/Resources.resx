@@ -129,6 +129,9 @@
   <data name="Msg_Duplicate" xml:space="preserve">
     <value>Thông tin {0} đã tồn tại trên hệ thống</value>
   </data>
+  <data name="Msg_Failed" xml:space="preserve">
+    <value>Thao tác thất bại</value>
+  </data>
   <data name="Msg_NotFormat" xml:space="preserve">
     <value>Thông tin {0} không đúng định dạng</value>
   </data>

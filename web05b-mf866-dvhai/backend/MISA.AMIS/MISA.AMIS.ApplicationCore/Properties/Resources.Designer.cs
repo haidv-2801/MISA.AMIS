@@ -97,6 +97,15 @@ namespace MISA.AMIS.ApplicationCore.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thao tác thất bại.
+        /// </summary>
+        public static string Msg_Failed {
+            get {
+                return ResourceManager.GetString("Msg_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thông tin {0} không đúng định dạng.
         /// </summary>
         public static string Msg_NotFormat {

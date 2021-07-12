@@ -109,9 +109,18 @@ namespace MISA.AMIS.ApplicationCore
             var isValid = Validate(entity);
             if (isValid)
             {
-                _serviceResult.Data = _baseRepository.Update(entityId, entity);
-                _serviceResult.MISACode = MISACode.Valid;
-                _serviceResult.Messasge = Properties.Resources.Msg_Success;
+                int rowAffects = _baseRepository.Update(entityId, entity);
+                _serviceResult.Data = rowAffects;
+                if (rowAffects > 0)
+                {
+                    _serviceResult.MISACode = MISACode.Valid;
+                    _serviceResult.Messasge = Properties.Resources.Msg_Success;
+                }
+                else
+                {
+                    _serviceResult.MISACode = MISACode.InValid;
+                    _serviceResult.Messasge = Properties.Resources.Msg_Failed;
+                }
             }
             else
             {
@@ -130,7 +139,20 @@ namespace MISA.AMIS.ApplicationCore
         /// CREATED BY: DVHAI (11/07/2021)
         public ServiceResult Delete(Guid entityId)
         {
-            _serviceResult.Data = _baseRepository.Delete(entityId);
+            int rowAffects = _baseRepository.Delete(entityId);
+            _serviceResult.Data = rowAffects;
+
+            if (rowAffects > 0)
+            {
+                _serviceResult.MISACode = MISACode.Success;
+                _serviceResult.Messasge = Properties.Resources.Msg_Success;
+            }
+            else
+            {
+                _serviceResult.MISACode = MISACode.InValid;
+                _serviceResult.Messasge = Properties.Resources.Msg_Failed;
+            }
+
             return _serviceResult;
         }
 
@@ -236,7 +258,7 @@ namespace MISA.AMIS.ApplicationCore
         protected dynamic convertValue(Type type, string value)
         {
             dynamic res = null;
-            
+
             if (string.IsNullOrEmpty(value))
                 return res;
 

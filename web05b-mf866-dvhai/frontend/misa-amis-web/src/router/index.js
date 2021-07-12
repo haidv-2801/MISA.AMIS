@@ -20,7 +20,7 @@ const routes = [
     component: () => import('../components/views/employee/EmployeeIndex.vue')
   },
   {
-    path: '/Overview',
+    path: '/',
     name: 'Employee',
     component: () => import('../components/views/employee/EmployeeIndex.vue')
   },

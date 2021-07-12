@@ -32,8 +32,6 @@ namespace MISA.AMIS.ApplicationCore.Interfaces
         #endregion
 
         #region Methods
-
-
         /// <summary>
         /// Lấy mã mới nhất của nhân viên cộng với 1
         /// </summary>
@@ -261,8 +259,6 @@ namespace MISA.AMIS.ApplicationCore.Interfaces
                     worksheet.Column(i + 1).Width = exportColumns[i - 1].Width;
                 }
 
-                worksheet.Column(5).Style.HorizontalAlignment 
-                        = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignLeft;
 
                 //3. Màu header
                 for (int index = 1; index <= employees.Count; index++)

@@ -77,8 +77,10 @@ namespace MISA.AMIS.Web.Controllers
 
             if (serviceResult.MISACode == MISACode.InValid)
                 return BadRequest(serviceResult);
+            else if (serviceResult.MISACode == MISACode.Exception)
+                return StatusCode(500, serviceResult);
 
-            return Created("Add", serviceResult);
+            return StatusCode(201, serviceResult);
         }
 
         /// <summary>
@@ -97,6 +99,8 @@ namespace MISA.AMIS.Web.Controllers
 
             if (serviceResult.MISACode == MISACode.InValid)
                 return BadRequest(serviceResult);
+            else if (serviceResult.MISACode == MISACode.Exception)
+                return StatusCode(500, serviceResult);
 
             return Ok(serviceResult);
         }
@@ -111,8 +115,11 @@ namespace MISA.AMIS.Web.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            var rowAffects = _baseService.Delete(Guid.Parse(id));
-            return Ok(rowAffects);
+            var serviceResult = _baseService.Delete(Guid.Parse(id));
+            if (serviceResult.MISACode == MISACode.Success)
+                return Ok(serviceResult);
+            else
+                return NoContent();
         }
     }
 }
