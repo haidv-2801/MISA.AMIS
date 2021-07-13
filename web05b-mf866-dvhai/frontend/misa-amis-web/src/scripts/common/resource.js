@@ -3,6 +3,8 @@ var Resource = Resource || {};
 
 //Thông báo trả về
 Resource.MsgReponse = {
+  EmptyMsgError: "{0} không được để trống",
+  FormatInValidError: "{0} không đúng định dạng",
   MisaMsgError: "Lỗi, vui lòng liên hệ MISA",
   EditMsgSuccess: "Sửa {0} thành công",
   AddMsgSuccess: "Thêm {0} thành công",

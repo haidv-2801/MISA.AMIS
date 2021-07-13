@@ -6,6 +6,7 @@
     :noDataText="'Không có dữ liệu cần tìm'"
     :searchEnabled="true"
     :showClearButton="false"
+    :searchTimeout="0"
     :width="cloneDataSource.style.width"
     :height="cloneDataSource.style.height"
     :data-source="cloneDataSource.data.value"
@@ -13,6 +14,7 @@
     :onFocusOut="blur"
     v-model="cloneModel"
   />
+
 </template>
 
 <script>
@@ -85,6 +87,7 @@ export default {
       this.validation.isValid = true;
     },
 
+
     /**
      * Blur input
      * DVHAI 06/07/2021
@@ -107,7 +110,7 @@ export default {
               ? validate[cons[0]](this.cloneModel)(cons[1])
               : validate[x](this.cloneModel);
 
-        let errMsg = this.data.data.labelText + ' ' + validateResult.msg;
+        let errMsg = validateResult.msg.format(this.data.data.labelText);
 
         //Cài đặt lỗi
         this.setValidateError(
@@ -136,6 +139,7 @@ export default {
   },
 
   watch: {
+    
     /**
      *Theo dõi giá trị của bản sao và thay đổi bản gốc bên ngoài component
      * DVHAI 07/07/2021

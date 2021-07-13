@@ -232,6 +232,7 @@ export default {
      * DVHAI 21/06/2021
      */
     filterTable() {
+      this.$store.commit('SET_LOADER', true);
       //Lấy danh sách lọc + phân trang
       EmployeeAPI.getEmployeesFilterPaging(
         this.pageSize,
@@ -246,10 +247,7 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          this.$bus.emit('openToast', {
-            type: 'toast--error',
-            text: Resource.MsgReponse.MisaMsgError,
-          });
+          this.$refs.formError.openPopup({error: Resource.MsgReponse.MisaMsgError})
         })
         .finally(() => {
           this.$store.commit('SET_LOADER', false);

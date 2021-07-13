@@ -245,6 +245,10 @@ namespace MISA.AMIS.ApplicationCore.Interfaces
                 //2. Ánh xạ giá trị vào header
                 for (int i = 1; i < exportColumns.Count; i++)
                 {
+                    if (exportColumns[i - 1].FieldName == "DateOfBirth")
+                    {
+                        worksheet.Column(i + 1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    }
                     worksheet.Cells[3, i + 1].Value = exportColumns[i - 1].DisplayName;
                     worksheet.Cells[3, i + 1].Style.Font.Bold = true;
                     worksheet.Cells[3, i + 1].Style.Fill.SetBackground(Color.LightGray);

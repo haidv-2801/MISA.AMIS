@@ -1,4 +1,5 @@
-import Enumeration from "./enumeration";
+import Enumeration from "./enumeration.js";
+import Resource from "./resource";
 
 var validate = validate || {};
 
@@ -8,10 +9,10 @@ validate.required = (value) => {
   let isValid = false,
     msg = "",
     errCode = Enumeration.ErrorCode.Valid;
-
+    debugger; // eslint-disable-line no-debugger
   isValid = value.toString().trim().length > 0;
   if (!isValid) {
-    msg = "không được để trống.";
+    msg = Resource.MsgReponse.EmptyMsgError;
     errCode = Enumeration.ErrorCode.Empty;
   }
 
@@ -22,33 +23,33 @@ validate.required = (value) => {
   };
 };
 
-validate.minLength = (value) => {
-  return (min) => {
-    let isValid = true,
-      msg = "",
-      errCode = Enumeration.ErrorCode.Valid;
+validate.email = (value) => {
+  let isValid = true,
+    msg = "",
+    errCode = Enumeration.ErrorCode.Valid;
 
-    if (!value)
-      return {
-        isValid,
-        msg,
-        errCode,
-      };
-
-    isValid = value.toString().trim().length >= min;
-
-    if (!isValid) {
-      msg = `độ dài tối thiểu ${min} kí tự.`;
-      errCode = Enumeration.ErrorCode.InValid;
-    }
-
+  if (!value)
     return {
       isValid,
       msg,
       errCode,
     };
+
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  isValid = re.test(String(value).toLowerCase());
+ 
+  if (!isValid) {
+    msg = Resource.MsgReponse.FormatInValidError;
+    errCode = Enumeration.ErrorCode.IncorrectFormat;
+  }
+
+  return {
+    isValid,
+    msg,
+    errCode,
   };
 };
+
 
 validate.maxLength = (value) => {
   return (max) => {
@@ -77,57 +78,5 @@ validate.maxLength = (value) => {
   };
 };
 
-validate.email = (value) => {
-  let isValid = true,
-    msg = "",
-    errCode = Enumeration.ErrorCode.Valid;
-
-  if (!value)
-    return {
-      isValid,
-      msg,
-      errCode,
-    };
-
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  isValid = re.test(String(value).toLowerCase());
- 
-  if (!isValid) {
-    msg = `chưa đúng định dạng.`;
-    errCode = Enumeration.ErrorCode.IncorrectFormat;
-  }
-
-  return {
-    isValid,
-    msg,
-    errCode,
-  };
-};
-
-validate.number = (value) => {
-  let isValid = true,
-    msg = "",
-    errCode = Enumeration.ErrorCode.Valid;
-
-  if (!value)
-    return {
-      isValid,
-      msg,
-      errCode,
-    };
-
-  isValid = /^[0-9]+$/.test(value);
-
-  if (!isValid) {
-    msg = `chưa đúng định dạng.`;
-    errCode = Enumeration.ErrorCode.IncorrectFormat;
-  }
-
-  return {
-    isValid,
-    msg,
-    errCode,
-  };
-};
 
 export default validate;

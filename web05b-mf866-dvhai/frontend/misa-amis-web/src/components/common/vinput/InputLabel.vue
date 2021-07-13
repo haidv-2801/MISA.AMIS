@@ -16,6 +16,7 @@
       :useMaskBehavior="true"
       :min="'01/01/1900'"
       :height="32"
+      :showClearButton="true"
       :width="180"
       :onFocusIn="focus"
       v-model="cloneModel"
@@ -162,12 +163,16 @@ export default {
       this.canValidate = false;
       for (const x of this.data.validation) {
         var cons = x.split(':'),
+            validateResult = {};
+
+        if(validate[cons[0]]){
           validateResult =
             cons.length > 1
               ? validate[cons[0]](this.cloneModel)(cons[1])
               : validate[x](this.cloneModel);
-
-        let errMsg = this.data.labelText + ' ' + validateResult.msg;
+        }
+         
+        let errMsg = validateResult.msg.format(this.data.labelText);
 
         //raise error
         this.setValidateError(

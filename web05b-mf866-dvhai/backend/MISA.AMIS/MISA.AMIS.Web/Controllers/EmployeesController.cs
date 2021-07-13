@@ -79,7 +79,7 @@ namespace MISA.CukCuk.Web.Controllers
         [HttpGet]
         public ActionResult GetEmployeesFilterPaging([FromQuery]string filterValue, [FromQuery] int limit, [FromQuery] int offset)
         {
-            return Ok(_employeeService.GetEmployeesFilterPaging(filterValue, limit, offset));
+            return Ok(_employeeService.GetEmployeesFilterPaging(filterValue, limit, offset));           
         }
 
         /// <summary>

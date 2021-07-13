@@ -280,7 +280,7 @@ function initState() {
       data: {
         inputId: 'departmentId',
         placeHolder: '',
-        labelText: 'Vị trí',
+        labelText: 'Đơn vị',
         key: [],
         value: [],
       },
@@ -858,14 +858,14 @@ export default {
               if (response.data.employeeId != value.employeeId) {
                 this.validateResult.push({
                   isValid: false,
-                  error: `Mã nhân viên <${value.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`,
+                  error: Resource.MsgReponse.DuplicateMsgError.format('Mã nhân viên', `<${value.employeeCode}>`),
                   errCode: Enumeration.ErrorCode.Duplicate,
                 });
               }
             } else {
               this.validateResult.push({
                 isValid: false,
-                error: `Mã nhân viên <${value.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`,
+                error: Resource.MsgReponse.DuplicateMsgError.format('Mã nhân viên', `<${value.employeeCode}>`),
                 errCode: Enumeration.ErrorCode.Duplicate,
               });
             }
