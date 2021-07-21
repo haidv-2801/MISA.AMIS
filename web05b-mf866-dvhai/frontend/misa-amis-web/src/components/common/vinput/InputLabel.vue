@@ -16,6 +16,7 @@
       :useMaskBehavior="true"
       :min="'01/01/1900'"
       :height="32"
+      :showClearButton="true"
       :width="180"
       :onFocusIn="focus"
       v-model="cloneModel"
@@ -151,6 +152,7 @@ export default {
      * DVHAI 06/07/2021
      */
     validate() {
+       this.canValidate = false;
       this.validation = validate.execute(this.cloneModel, this.data.validation);
       this.validation.message = this.validation.message.format(this.data.labelText);
       if(!this.validation.isValid) this.$bus.emit('validateResult', this.validation);

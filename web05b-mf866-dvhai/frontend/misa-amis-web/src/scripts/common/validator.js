@@ -38,6 +38,7 @@ validate.email = (value) => {
   return result;
 };
 
+
 validate.maxLength = (value) => {
   return (max) => {
     let result = {...validate.defaultResponse},

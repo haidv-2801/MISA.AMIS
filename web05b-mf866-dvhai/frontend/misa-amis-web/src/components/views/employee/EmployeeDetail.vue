@@ -277,7 +277,7 @@ function initState() {
       data: {
         inputId: 'departmentId',
         placeHolder: '',
-        labelText: 'Vị trí',
+        labelText: 'Đơn vị',
         key: [],
         value: [],
       },
@@ -856,6 +856,7 @@ export default {
               }
             } else {
               hasError = true;
+
             }
           }
 

@@ -6,6 +6,7 @@
     :noDataText="'Không có dữ liệu cần tìm'"
     :searchEnabled="true"
     :showClearButton="false"
+    :searchTimeout="0"
     :width="cloneDataSource.style.width"
     :height="cloneDataSource.style.height"
     :data-source="cloneDataSource.data.value"
@@ -15,6 +16,7 @@
     :searchTimeout="0"
     v-model="cloneModel"
   />
+
 </template>
 
 <script>
@@ -104,6 +106,7 @@ export default {
   },
 
   watch: {
+    
     /**
      *Theo dõi giá trị của bản sao và thay đổi bản gốc bên ngoài component
      * DVHAI 07/07/2021
