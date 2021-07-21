@@ -5,22 +5,22 @@
 
 /* Font của website */
 @font-face {
-  font-family: "NotosanRegular";
+  font-family: 'NotosanRegular';
   src: url(../../font/notosans-regular.2cb88a13.woff2);
 }
 
 @font-face {
-  font-family: "NotosanBold";
+  font-family: 'NotosanBold';
   src: url(../../font/notosans-bold.3ede5aff.woff2);
 }
 
 @font-face {
-  font-family: "NotosanItalic";
+  font-family: 'NotosanItalic';
   src: url(../../font/notosans-italic.1c1aaac9.woff2);
 }
 
 @font-face {
-  font-family: "NotosanSemibold";
+  font-family: 'NotosanSemibold';
   src: url(../../font/notosans-semibold.df3e6dc4.woff2);
 }
 
@@ -29,15 +29,24 @@
   --color-great: #2ca01c;
   --color-main-background: #f4f5f8;
   --color-border-input: #babec5;
+  /* haidv 19/07/2021 */
+  --color-overlay: rgba(0, 0, 0, 0.3);
 
   /* dùng cho utility trong row */
   --size-top: 20px;
 
-  --z-index-low: 0;
-  --z-index-mid: 1000;
-  --z-index-overlay: 1000;
-  --z-index-high: 2000;
-  --z-index-veryhight: 3001;
+  /* haidv 19/07/2021 */
+  --z-index-low: 100;
+  --z-index-lowplus: 200;
+
+  --z-index-mid: 300;
+  --z-index-midplus: 400;
+
+  --z-index-high: 500;
+  --z-index-highplus: 600;
+
+  --z-index-extra: 700;
+  --z-index-extraplus: 800;
 }
 
 /* header root */
@@ -69,7 +78,7 @@ html {
 
 /* header */
 .region__icon--toggle {
-  background: url("../../img/Sprites.64af8f61.svg") no-repeat;
+  background: url('../../img/Sprites.64af8f61.svg') no-repeat;
   width: 24px;
   height: 24px;
   margin-left: 10px;
@@ -98,7 +107,6 @@ html {
   width: 40px;
   z-index: 0;
 }
-
 
 .icon-arrow-down {
   background-position: -1123px -357px;
@@ -130,7 +138,7 @@ html {
 }
 
 .icon-toggle-white {
-  background: url("../../img/Sprites.64af8f61.svg") no-repeat;
+  background: url('../../img/Sprites.64af8f61.svg') no-repeat;
   background-position: -312px -32px;
 }
 
@@ -144,12 +152,12 @@ html {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0,0,0,.4);;
+  background-color: var(--color-overlay);
   align-items: center;
   justify-content: center;
   overflow: auto;
-  z-index: var(--z-index-overlay);
-  transform: all .25s ease;
+  z-index: var(--z-index-mid);
+  transform: all 0.25s ease;
 }
 
 .d-flex {
@@ -226,7 +234,7 @@ html {
 
 /* button */
 .btn {
-  transition: all .2s ease;
+  transition: all 0.2s ease;
   outline: none;
   border: none;
   font-family: NotosanRegular;
@@ -275,13 +283,13 @@ html {
 /* slide */
 .slide-leave-active,
 .slide-enter-active {
-  transition: all 0.5s ease;
+  transition: all 0.25s ease;
 }
 
 .slide-enter,
 .slide-leave-to {
   transform: translateY(-50%);
-  opacity: 0; 
+  opacity: 0;
 }
 
 .slide-fade-enter-active {
@@ -306,7 +314,8 @@ html {
 }
 
 /* dxdatebox */
-.dx-state-focused {
+.dx-state-focused,
+.dx-state-active {
   border: 1px solid var(--color-great) !important;
 }
 
@@ -339,17 +348,14 @@ html {
   padding: 6px 0px 6px 10px !important;
 }
 
-.dx-widget input, .dx-widget textarea {
+.dx-widget input,
+.dx-widget textarea {
   font-family: NotosanRegular !important;
 }
 
 .dx-datebox .dx-placeholder {
   font-size: 13px;
   font-family: NotosanRegular;
-}
-
-.dx-state-active {
-  border: 1px solid var(--color-great) !important;
 }
 
 input.dx-texteditor-input::placeholder {
@@ -362,7 +368,6 @@ input.dx-texteditor-input::placeholder {
   align-items: center;
   text-align: center;
 }
-
 
 /* tooltip */
 .tooltip {

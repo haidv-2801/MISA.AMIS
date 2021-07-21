@@ -62,6 +62,8 @@ import DialogError from '../../common/vdialog/DialogError.vue';
 import DialogConfirmStopTyping from '../../common/vdialog/DialogConfirmStopTyping.vue';
 import EmployeeAPI from '../../../api/coponents/EmployeeAPI';
 import Resource from '../../../scripts/common/resource';
+import * as mut from '../../../store/mutation-types';
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'EmployeeIndex',
@@ -161,18 +163,18 @@ export default {
      * Làm mới bảng
      * DVHAI 07/07/2021
      */
-    this.refreshGrid();
+    // this.refreshGrid();
   },
 
   watch: {},
 
   methods: {
-      /**
+    /**
      * Gọi form chi tiết lưu dữ liệu
      * DVHAI 07/07/2021
      */
     saveData() {
-      this.$refs.formEmployeeDetail.saveAndClose()
+      this.$refs.formEmployeeDetail.saveAndClose();
     },
 
     /**
@@ -210,7 +212,7 @@ export default {
      * DVHAI 13/06/2021
      */
     getDataGrid() {
-      this.$store.commit('SET_LOADER', true);
+      this.$store.commit(mut.SET_LOADER, true);
       EmployeeAPI.getAll()
         .then((response) => {
           this.gridDataTable.data = response.data;
@@ -223,7 +225,7 @@ export default {
           });
         })
         .finally(() => {
-          this.$store.commit('SET_LOADER', false);
+          this.$store.commit(mut.SET_LOADER, false);
         });
     },
 
@@ -232,6 +234,8 @@ export default {
      * DVHAI 21/06/2021
      */
     filterTable() {
+      this.$store.commit(mut.SET_LOADER, true);
+
       //Lấy danh sách lọc + phân trang
       EmployeeAPI.getEmployeesFilterPaging(
         this.pageSize,
@@ -239,20 +243,18 @@ export default {
         this.filterString
       )
         .then((response) => {
-          // debugger; // eslint-disable-line no-debugger
-          this.gridDataTable.data = response.data.data.data;
-          this.$store.commit('SET_TOTALPAGE', response.data.data.totalPage);
-          this.$store.commit('SET_TOTALRECORD', response.data.data.totalRecord);
+          let  res = response.data.data;
+
+          this.gridDataTable.data = res.data;
+          this.$store.commit(mut.SET_TOTALPAGE, res.totalPage);
+          this.$store.commit(mut.SET_TOTALRECORD, res.totalRecord);
         })
         .catch((error) => {
           console.log(error);
-          this.$bus.emit('openToast', {
-            type: 'toast--error',
-            text: Resource.MsgReponse.MisaMsgError,
-          });
+          this.openFormError({error:Resource.MsgReponse.MisaMsgError})
         })
         .finally(() => {
-          this.$store.commit('SET_LOADER', false);
+          this.$store.commit(mut.SET_LOADER, false);
         });
     },
 
@@ -277,7 +279,6 @@ export default {
      * DVHAI 07/07/2021
      */
     refreshGrid() {
-      // this.getDataGrid();
       this.filterTable();
     },
 
@@ -286,7 +287,10 @@ export default {
      * DVHAI 07/07/2021
      */
     openConfirmDelete(item) {
-      this.$refs.confirmDialogDel.openPopup(this.entity.entityName, item.employeeCode,);
+      this.$refs.confirmDialogDel.openPopup(
+        this.entity.entityName,
+        item.employeeCode
+      );
     },
 
     /**
@@ -295,13 +299,13 @@ export default {
      */
     deleteRecord() {
       //Lấy thực thể cần xóa từ store
-      let entity = this.$store.state.entity;
+      let ent = this.vuexentity;
 
       //Nếu khác null chứng tỏ tồn tại cần xóa
-      if (entity != null) {
-        let id = entity.employeeId;
-        
-        this.$store.commit('SET_LOADER', true);
+      if (ent != null) {
+        let id = ent.employeeId;
+
+        this.$store.commit(mut.SET_LOADER, true);
 
         EmployeeAPI.delete(id)
           .then((response) => {
@@ -309,19 +313,18 @@ export default {
 
             this.$bus.emit('openToast', {
               type: Resource.ToastType.ToastSuccess,
-              text:  Resource.MsgReponse.DeleteMsgSuccess.format(this.entity.entityName),
+              text: Resource.MsgReponse.DeleteMsgSuccess.format(
+                this.ent.entityName
+              ),
             });
 
             //Gán lại thực thể trong store bằng null
-            this.$store.commit('SET_ENTITY', null);
+            this.$store.commit(mut.SET_ENTITY, null);
             this.refreshGrid();
           })
           .catch((error) => {
             console.log(error);
-            this.$bus.emit('openToast', {
-              type: Resource.ToastType.ToastError,
-              text: Resource.MsgReponse.MisaMsgError,
-            });
+            this.openFormError({error:Resource.MsgReponse.MisaMsgError})
           });
       }
     },
@@ -336,20 +339,12 @@ export default {
   },
 
   computed: {
-    //Số bản ghi trên 1 trang
-    pageSize() {
-      return this.$store.state.pagination.pageSize;
-    },
-
-    //Trang hiện tại
-    pageNumber() {
-      return this.$store.state.pagination.pageNumber;
-    },
-
-    //Giá trị lọc
-    filterValue() {
-      return this.$store.state.pagination.filterValue;
-    },
+    ...mapGetters({
+      pageSize: mut.GET_PAGESIZE,
+      pageNumber: mut.GET_PAGENUMBER,
+      filterValue: mut.GET_FILTERVALUE,
+      vuexentity: mut.GET_ENTITY
+    })
   },
 };
 </script>

@@ -17,7 +17,7 @@ export default {
   props: {
     customData: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data() {
@@ -32,19 +32,23 @@ export default {
      */
     displayTooltip(e) {
       //Lấy tooltip content
-      let tooltip = e.target
-        .closest(".tooltip-ver1")
-        .querySelector(".tooltip__content");
-      //Xét vị trí cho tooltip
-      tooltip.style.left =
-        e.pageX + tooltip.clientWidth + 5 < document.body.clientWidth
-          ? e.pageX + 10 + "px"
-          : document.body.clientWidth + 5 - 2 * tooltip.clientWidth + "px";
-      tooltip.style.top =
-        e.pageY + tooltip.clientHeight + 5 < document.body.clientHeight
-          ? e.pageY + 5 + "px"
-          : document.body.clientHeight + 5 - tooltip.clientHeight + "px";
+      let el = e.target.closest('.tooltip-ver1'),
+          elDimension = el.getBoundingClientRect(),
+          content = el.querySelector('.tooltip__content'),
+          contentDimension = content.getBoundingClientRect(),
+          contentLeftPos = elDimension.left + (elDimension.width / 2),
+          contentTopPos = elDimension.top + elDimension.height + 2;
 
+      //Xét vị trí cho tooltip
+      if(contentLeftPos + contentDimension.width >= window.innerWidth) 
+        contentLeftPos = contentLeftPos -  contentDimension.width;
+      
+      if(contentTopPos + contentDimension.height >= window.innerHeight) 
+        contentTopPos = contentTopPos -  contentDimension.height;
+
+      content.style.left = contentLeftPos + "px";
+      content.style.top = contentTopPos + "px";
+      
       setTimeout(() => {
         this.showTooltip = true;
       }, 0);
@@ -52,13 +56,16 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .tooltip__content {
+  height: 28px !important;
+  display: flex;
+  align-items: center;
   position: fixed;
   white-space: nowrap;
   background: rgb(56, 55, 55);
-  padding: 5px;
-  z-index: 5000;
+  padding: 7px;
+  z-index: var(--z-index-extraplus);
   color: #fff;
   font-size: 12px;
 }

@@ -309,7 +309,7 @@ export default {
 }
 
 .dropdown__items {
-  z-index: 99;
+  z-index: var(--z-index-low);
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   width: 100%;
   background-color: white;

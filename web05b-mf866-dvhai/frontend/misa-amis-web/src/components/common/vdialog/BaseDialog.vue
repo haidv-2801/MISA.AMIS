@@ -1,4 +1,5 @@
 <template>
+  <div class="alert-wrapper">
     <div class="alert">
       <div class="alert__content">
         <slot name="content">
@@ -15,19 +16,26 @@
         <slot name="alert__foot"> </slot>
       </div>
     </div>
+  </div>
 </template>
 
 <script></script>
 
 <style scoped>
-.alert {
-  z-index: 4000;
+.alert-wrapper {
+  z-index: var(--z-index-high);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  margin: auto;
+  background-color: var(--color-overlay);
+}
+
+.alert {
   transition: all 0.2s;
   box-shadow: 0 5px 20px 0 rgb(0 0 0 / 10%);
   background-color: #fff;

@@ -4,8 +4,8 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     x="0px"
     y="0px"
-    width="32"
-    height="32"
+    width="40"
+    height="40"
     viewBox="0 0 32 32"
   >
     <title>32px_dots 06</title>

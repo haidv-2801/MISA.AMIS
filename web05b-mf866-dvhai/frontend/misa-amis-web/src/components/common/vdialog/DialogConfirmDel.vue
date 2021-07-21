@@ -101,7 +101,7 @@ export default {
      * DVHAI 07/07/2021
      */
     invokeOverlay() {
-      this.$bus.emit('invokeOverlay');
+      // this.$bus.emit('invokeOverlay');
     },
   },
 

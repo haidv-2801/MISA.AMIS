@@ -1,240 +1,235 @@
 <template>
   <transition name="slide">
-    <div ref="formGroup" v-if="isOpen" class="popup__form">
-      <div class="form__head">
-        <div class="head__left">
-          <div class="head__title">Thông tin nhân viên</div>
-          <div class="checkbox-option">
-            <div class="tick-box icon-18 icon-src"></div>
-            <span class="checkbox-text">Là khách hàng</span>
-          </div>
-          <div class="checkbox-option">
-            <div class="tick-box icon-18 icon-src"></div>
-            <span class="checkbox-text">Là nhà cung cấp</span>
-          </div>
-        </div>
-
-        <div class="head__right">
-          <div
-            tooltiptext="Hỗ trợ (F1)"
-            class="icon-src icon-24 icon-help mg-r-6-px tooltip"
-          ></div>
-          <div
-            tooltiptext="Đóng (ESC)"
-            @click="openDialogConfirmStoptyping()"
-            class="icon-src icon-24 icon-close tooltip"
-          ></div>
-        </div>
-      </div>
-      <div class="form__body">
-        <div class="body__top">
-          <div class="body__topleft">
-            <div class="body-row">
-              <InputLabel
-                id="first-focus"
-                class="mg-r-6-px"
-                MustValidate="true"
-                @changeValueInput="changeValueInput"
-                @checkUnique="checkUnique"
-                :model="employeeModel.employeeCode"
-                :data="employeeCodeInput"
-                :ref="employeeCodeInput.inputId"
-                :styleObject="{ width: '155px' }"
-                :key="key"
-              />
-
-              <InputLabel
-                class="flex-1"
-                MustValidate="true"
-                @changeValueInput="changeValueInput"
-                :model="employeeModel.employeeName"
-                :data="employeeNameInput"
-                :styleObject="{}"
-              />
+    <div class="popup__form-wrapper" v-if="isOpen">
+      <div ref="formGroup" class="popup__form">
+        <div class="form__head">
+          <div class="head__left">
+            <div class="head__title">Thông tin nhân viên</div>
+            <div class="checkbox-option">
+              <div class="tick-box icon-18 icon-src"></div>
+              <span class="checkbox-text">Là khách hàng</span>
             </div>
+            <div class="checkbox-option">
+              <div class="tick-box icon-18 icon-src"></div>
+              <span class="checkbox-text">Là nhà cung cấp</span>
+            </div>
+          </div>
 
-            <div class="body-row">
-              <div class="row__item flex-1">
-                <label for="">Đơn vị <span class="color-red">*</span> </label>
-                <div Mustvalidate="true">
-                  <DropdownMaster
-                    @changeValueInput="changeValueInput"
-                    :data="dropdownDepartment"
-                    :model="employeeModel.departmentName"
-                    tabindex="0"
-                  />
+          <div class="head__right">
+            <div
+              tooltiptext="Hỗ trợ (F1)"
+              class="icon-src icon-24 icon-help mg-r-6-px tooltip"
+            ></div>
+            <div
+              tooltiptext="Đóng (ESC)"
+              @click="openDialogConfirmStoptyping()"
+              class="icon-src icon-24 icon-close tooltip"
+            ></div>
+          </div>
+        </div>
+        <div class="form__body">
+          <div class="body__top">
+            <div class="body__topleft">
+              <div class="body-row">
+                <InputLabel
+                  id="first-focus"
+                  class="mg-r-6-px"
+                  MustValidate="true"
+                  @changeValueInput="changeValueInput"
+                  @checkUnique="checkUnique"
+                  :model="employeeModel.employeeCode"
+                  :data="employeeCodeInput"
+                  :ref="employeeCodeInput.inputId"
+                  :styleObject="{ width: '155px' }"
+                  :key="key"
+                />
+
+                <InputLabel
+                  class="flex-1"
+                  MustValidate="true"
+                  @changeValueInput="changeValueInput"
+                  :model="employeeModel.employeeName"
+                  :data="employeeNameInput"
+                  :styleObject="{}"
+                />
+              </div>
+
+              <div class="body-row">
+                <div class="row__item flex-1">
+                  <label for="">Đơn vị <span class="color-red">*</span> </label>
+                  <div MustValidate="true">
+                    <DropdownMaster
+                      tabindex="0"
+                      @changeValueInput="changeValueInput"
+                      :data="dropdownDepartment"
+                      :model="employeeModel.departmentName"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
 
+              <div class="body-row">
+                <InputLabel
+                  class="flex-1"
+                  @changeValueInput="changeValueInput"
+                  :model="employeeModel.employeePosition"
+                  :data="employeePositionInput"
+                  :styleObject="{ width: '100%' }"
+                />
+              </div>
+            </div>
+            <div class="body__topright">
+              <div class="body-row">
+                <InputLabel
+                  class="mg-r-6-px"
+                  @changeValueInput="changeValueInput"
+                  :model="employeeModel.dateOfBirth"
+                  :data="dateOfBirthInput"
+                />
+
+                <!-- Giới tính -->
+                <div class="row__item flex-1 padding-left-10">
+                  <label for="">Giới tính</label>
+                  <RadioButtonMaster
+                    @changeValueInput="changeValueInput"
+                    :model="employeeModel.gender"
+                    :data="radioButtonGender"
+                  />
+                </div>
+                <!-- end -->
+              </div>
+
+              <div class="body-row">
+                <InputLabel
+                  class="flex-1 mg-r-6-px"
+                  @changeValueInput="changeValueInput"
+                  :model="employeeModel.identityNumber"
+                  :data="identityNumberInput"
+                />
+
+                <InputLabel
+                  @changeValueInput="changeValueInput"
+                  :model="employeeModel.identityDate"
+                  :data="identityDateInput"
+                />
+              </div>
+
+              <div class="body-row">
+                <InputLabel
+                  class="flex-1"
+                  @changeValueInput="changeValueInput"
+                  :model="employeeModel.identityPlace"
+                  :data="identityPlaceInput"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="body__bottom">
             <div class="body-row">
               <InputLabel
-                class="flex-1"
-                MustValidate="true"
+                class="width-100pt"
                 @changeValueInput="changeValueInput"
-                :model="employeeModel.employeePosition"
-                :data="employeePositionInput"
+                @checkUnique="checkUnique"
+                :model="employeeModel.address"
+                :data="addressInput"
+                :ref="addressInput.inputId"
                 :styleObject="{ width: '100%' }"
               />
             </div>
-          </div>
-          <div class="body__topright">
             <div class="body-row">
               <InputLabel
                 class="mg-r-6-px"
                 @changeValueInput="changeValueInput"
-                :model="employeeModel.dateOfBirth"
-                :data="dateOfBirthInput"
-              />
-
-              <!-- Giới tính -->
-              <div class="row__item flex-1 padding-left-10">
-                <label for="">Giới tính</label>
-                <RadioButtonMaster
-                  @changeValueInput="changeValueInput"
-                  :model="employeeModel.gender"
-                  :data="radioButtonGender"
-                />
-              </div>
-              <!-- end -->
-            </div>
-
-            <div class="body-row">
-              <InputLabel
-                class="flex-1 mg-r-6-px"
-                MustValidate="true"
-                @changeValueInput="changeValueInput"
-                :model="employeeModel.identityNumber"
-                :data="identityNumberInput"
+                @checkUnique="checkUnique"
+                :model="employeeModel.phoneNumber"
+                :data="phoneNumberInput"
+                :ref="phoneNumberInput.inputId"
+                :styleObject="{ width: '197px' }"
               />
 
               <InputLabel
-                MustValidate="true"
+                class="mg-r-6-px"
                 @changeValueInput="changeValueInput"
-                :model="employeeModel.identityDate"
-                :data="identityDateInput"
+                @checkUnique="checkUnique"
+                :model="employeeModel.telephoneNumber"
+                :data="telephoneNumberInput"
+                :ref="telephoneNumberInput.inputId"
+                :styleObject="{ width: '197px' }"
+              />
+
+              <InputLabel
+                @changeValueInput="changeValueInput"
+                @checkUnique="checkUnique"
+                MustValidate="true"
+                :model="employeeModel.email"
+                :data="emailInput"
+                :ref="emailInput.inputId"
+                :styleObject="{ width: '197px' }"
               />
             </div>
 
             <div class="body-row">
               <InputLabel
-                class="flex-1"
-                MustValidate="true"
+                class="mg-r-6-px"
                 @changeValueInput="changeValueInput"
-                :model="employeeModel.identityPlace"
-                :data="identityPlaceInput"
+                @checkUnique="checkUnique"
+                :model="employeeModel.bankAccountNumber"
+                :data="bankAccountNumberInput"
+                :ref="bankAccountNumberInput.inputId"
+                :styleObject="{ width: '197px' }"
+              />
+
+              <InputLabel
+                class="mg-r-6-px"
+                @changeValueInput="changeValueInput"
+                @checkUnique="checkUnique"
+                :model="employeeModel.bankName"
+                :data="bankNameInput"
+                :ref="bankNameInput.inputId"
+                :styleObject="{ width: '197px' }"
+              />
+
+              <InputLabel
+                @changeValueInput="changeValueInput"
+                @checkUnique="checkUnique"
+                :model="employeeModel.bankBranchName"
+                :data="bankBranchNameInput"
+                :ref="bankBranchNameInput.inputId"
+                :styleObject="{ width: '197px' }"
               />
             </div>
           </div>
+          <div class="separate"></div>
         </div>
-        <div class="body__bottom">
-          <div class="body-row">
-            <InputLabel
-              class="width-100pt"
-              MustValidate="true"
-              @changeValueInput="changeValueInput"
-              @checkUnique="checkUnique"
-              :model="employeeModel.address"
-              :data="addressInput"
-              :ref="addressInput.inputId"
-              :styleObject="{ width: '100%' }"
-            />
+        <div class="form__bottom">
+          <div class="group__button--left">
+            <Tooltip :customData="'Hủy'">
+              <button
+                @click="closeForm()"
+                class="btn bgcolor-fff btn-cancel btn-size-default btn-border-default btn-h-36"
+              >
+                Hủy
+              </button>
+            </Tooltip>
           </div>
-          <div class="body-row">
-            <InputLabel
-              class="mg-r-6-px"
-              MustValidate="true"
-              @changeValueInput="changeValueInput"
-              @checkUnique="checkUnique"
-              :model="employeeModel.phoneNumber"
-              :data="phoneNumberInput"
-              :ref="phoneNumberInput.inputId"
-              :styleObject="{ width: '197px' }"
-            />
-
-            <InputLabel
-              class="mg-r-6-px"
-              MustValidate="true"
-              @changeValueInput="changeValueInput"
-              @checkUnique="checkUnique"
-              :model="employeeModel.telephoneNumber"
-              :data="telephoneNumberInput"
-              :ref="telephoneNumberInput.inputId"
-              :styleObject="{ width: '197px' }"
-            />
-
-            <InputLabel
-              MustValidate="true"
-              @changeValueInput="changeValueInput"
-              @checkUnique="checkUnique"
-              :model="employeeModel.email"
-              :data="emailInput"
-              :ref="emailInput.inputId"
-              :styleObject="{ width: '197px' }"
-            />
+          <div class="group__button--right">
+            <Tooltip :customData="'Cất và đóng'">
+              <button
+                @click="saveAndClose()"
+                class="btn bgcolor-fff btn-size-default btn-border-default btn-h-36 btn-save"
+              >
+                Cất
+              </button>
+            </Tooltip>
+            <Tooltip :customData="'Cất và thêm'">
+              <button
+                @click="saveAndClear()"
+                class="btn btn-save-add btn-h-36 btn-green"
+              >
+                Cất và thêm
+              </button>
+            </Tooltip>
           </div>
-
-          <div class="body-row">
-            <InputLabel
-              class="mg-r-6-px"
-              MustValidate="true"
-              @changeValueInput="changeValueInput"
-              @checkUnique="checkUnique"
-              :model="employeeModel.bankAccountNumber"
-              :data="bankAccountNumberInput"
-              :ref="bankAccountNumberInput.inputId"
-              :styleObject="{ width: '197px' }"
-            />
-
-            <InputLabel
-              class="mg-r-6-px"
-              MustValidate="true"
-              @changeValueInput="changeValueInput"
-              @checkUnique="checkUnique"
-              :model="employeeModel.bankName"
-              :data="bankNameInput"
-              :ref="bankNameInput.inputId"
-              :styleObject="{ width: '197px' }"
-            />
-
-            <InputLabel
-              MustValidate="true"
-              @changeValueInput="changeValueInput"
-              @checkUnique="checkUnique"
-              :model="employeeModel.bankBranchName"
-              :data="bankBranchNameInput"
-              :ref="bankBranchNameInput.inputId"
-              :styleObject="{ width: '197px' }"
-            />
-          </div>
-        </div>
-        <div class="separate"></div>
-      </div>
-      <div class="form__bottom">
-        <div class="group__button--left">
-          <button
-            tooltiptext="Hủy"
-            @click="closeForm()"
-            class="btn bgcolor-fff btn-cancel btn-size-default btn-border-default btn-h-36 tooltip"
-          >
-            Hủy
-          </button>
-        </div>
-        <div class="group__button--rigth">
-          <button
-            tooltiptext="Cất (Ctrl + s)"
-            @click="saveAndClose()"
-            class="btn bgcolor-fff btn-size-default btn-border-default btn-h-36 btn-save tooltip"
-          >
-            Cất
-          </button>
-          <button
-            tooltiptext="Cất và thêm (Ctrl + Shift + s)"
-            @click="saveAndClear()"
-            class="btn btn-save-add btn-h-36 btn-green tooltip"
-          >
-            Cất và thêm
-          </button>
         </div>
       </div>
     </div>
@@ -250,6 +245,8 @@ import RadioButtonMaster from '../../common/vradiobutton/RadioButtonMaster.vue';
 import Enumeration from '../../../scripts/common/enumeration';
 import Resource from '../../../scripts/common/resource';
 import CommonFn from '../../../scripts/common/common';
+import { SET_HASVALIDATE, SET_LOADER } from '../../../store/mutation-types';
+import Tooltip from '@/components/common/vtooltip/Tooltip';
 
 //Khởi tạo trạng thái ban đầu
 function initState() {
@@ -452,6 +449,7 @@ function initState() {
 export default {
   name: 'EmployeeDetail',
   components: {
+    Tooltip,
     InputLabel,
     DropdownMaster,
     RadioButtonMaster,
@@ -469,18 +467,10 @@ export default {
     //Lắng nghe sự kiện xem tất cả các trường validate thế nào
     this.$bus.on('validateResult', (value) => {
       this.validateResult.push(value);
+      console.log(this.validateResult);
     });
   },
   methods: {
-    /**
-     * Dữ liệu ban đầu khi mở form
-     * DVHAI 08/07/2021
-     */
-    // updateOriginModel(key, value) {
-    //   this.employeeOrigin[key] = value;
-    //   console.log(value)
-    // },
-
     /**
      * Mở form xác nhận thay đổi dữ liệu
      * DVHAI 08/07/2021
@@ -557,22 +547,17 @@ export default {
       if (this.formMode == Enumeration.FormMode.Edit) {
         await this.bindDataForm(cloneItem);
       } else if (this.formMode == Enumeration.FormMode.Add) {
-        await this.getNewEmployeeCode();
+        this.employeeModel.employeeCode = await this.getNewEmployeeCode();
         this.key += 1;
       } else if (this.formMode == Enumeration.FormMode.Duplicate) {
         await this.bindDataForm(cloneItem);
-        await this.getNewEmployeeCode();
+        this.employeeModel.employeeCode = await this.getNewEmployeeCode();
       } else {
         //
       }
 
       //Tự động focus ô đầu
       this.focusField();
-
-      // //Tạo bản sao dữ liệu để so sánh thay đổi
-      // this.employeeOrigin = await JSON.parse(
-      //   JSON.stringify(this.employeeModel)
-      // );
     },
 
     /**
@@ -593,17 +578,19 @@ export default {
      * DVHAI 08/07/2021
      */
     async getNewEmployeeCode() {
+      let empCode = '';
       await EmployeeAPI.getNextEmployeeCode()
         .then((response) => {
-          this.employeeModel.employeeCode = response.data;
+          empCode = response.data;
         })
         .catch((error) => {
           console.log(error);
-          this.$bus.emit('openToast', {
-            type: Resource.ToastType.ToastInfo,
-            text: Resource.MsgReponse.GenerationError,
-          });
+          debugger; // eslint-disable-line no-debugger
+           let test = Resource.MsgReponse.GenerationError;
+           console.log(test)
+          this.openFormError({ error: Resource.MsgReponse.GenerationError });
         });
+      return empCode;
     },
 
     /**
@@ -620,7 +607,7 @@ export default {
      */
     async getEmployeeById(id) {
       let emp = null;
-      this.$store.commit('SET_LOADER', true);
+      this.$store.commit(SET_LOADER, true);
       await EmployeeAPI.getById(id)
         .then((response) => {
           emp = response.data;
@@ -633,7 +620,7 @@ export default {
           });
         })
         .finally(() => {
-          this.$store.commit('SET_LOADER', false);
+          this.$store.commit(SET_LOADER, false);
         });
 
       return emp;
@@ -666,7 +653,7 @@ export default {
         if (this.validateResult.length == 0 && this.validateAddServer == true) {
           this.validateAddServer = false;
           this.employeeModel = {};
-          await this.getNewEmployeeCode();
+          this.employeeModel.employeeCode = await this.getNewEmployeeCode();
         }
       } catch (e) {
         this.openFormError({ error: Resource.MsgReponse.MisaMsgError });
@@ -683,21 +670,24 @@ export default {
 
       //Nếu không có lỗi
       if (this.validateResult.length == 0) {
-        this.$store.commit('SET_LOADER', true);
-        if (
-          this.formMode == Enumeration.FormMode.Add ||
-          this.formMode == Enumeration.FormMode.Duplicate
-        ) {
-          //Thêm dữ liệu
-          await this.add();
-        } else if (this.formMode == Enumeration.FormMode.Edit) {
-          //Sửa dữ liệu
-          await this.edit();
+        this.$store.commit(SET_LOADER, true);
+        switch (this.formMode) {
+          case Enumeration.FormMode.Edit: {
+            //Sửa dữ liệu
+            await this.edit();
+            break;
+          }
+          case this.formMode == Enumeration.FormMode.Add:
+          case Enumeration.FormMode.Duplicate: {
+            //Thêm dữ liệu
+            await this.add();
+            break;
+          }
         }
       } else {
         //Mở form lỗi
         let err = this.validateResult[0];
-        if (err.errCode == Enumeration.ErrorCode.Empty) {
+        if (err.code == Enumeration.ErrorCode.Empty) {
           this.openFormError(err);
           //Focus và ô lỗi
         } else {
@@ -739,10 +729,10 @@ export default {
         })
         .finally(() => {
           //Đóng loader
-          this.$store.commit('SET_LOADER', false);
+          this.$store.commit(SET_LOADER, false);
 
           //Đóng validate all
-          this.$store.commit('SET_HASVALIDATE', false);
+          this.$store.commit(SET_HASVALIDATE, false);
         });
     },
 
@@ -767,7 +757,7 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-           this.validateAddServer = false;
+          this.validateAddServer = false;
           if (error.response.status == Enumeration.HttpStatusCode.BadRequest) {
             this.openFormWarning({ error: error.response.data.data });
           } else {
@@ -776,8 +766,8 @@ export default {
           }
         })
         .finally(() => {
-          this.$store.commit('SET_LOADER', false);
-          this.$store.commit('SET_HASVALIDATE', false);
+          this.$store.commit(SET_LOADER, false);
+          this.$store.commit(SET_HASVALIDATE, false);
         });
     },
 
@@ -832,13 +822,17 @@ export default {
       //Khi bấm nút thêm hoặc sửa cho phép validate tất cả
       this.validateAddServer = true;
 
-      this.$store.commit('SET_HASVALIDATE', true);
+      this.$store.commit(SET_HASVALIDATE, true);
       this.validateResult = [];
       var elValidate = this.$refs.formGroup.querySelectorAll('[MustValidate]');
+
+      console.log(elValidate);
+
       for (const el of elValidate) {
         await el.querySelector('.focus').focus();
         await el.querySelector('.focus').blur();
       }
+
       if (this.validateResult.length == 0) {
         await this.checkUnique(this.employeeModel);
       }
@@ -853,22 +847,27 @@ export default {
       await EmployeeAPI.getEmployeeBycode(value.employeeCode).then(
         (response) => {
           console.log(response);
+          let hasError = false;
+
           if (response.status != Enumeration.HttpStatusCode.NoContent) {
             if (this.formMode == Enumeration.FormMode.Edit) {
               if (response.data.employeeId != value.employeeId) {
-                this.validateResult.push({
-                  isValid: false,
-                  error: `Mã nhân viên <${value.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`,
-                  errCode: Enumeration.ErrorCode.Duplicate,
-                });
+                hasError = true;
               }
             } else {
-              this.validateResult.push({
-                isValid: false,
-                error: `Mã nhân viên <${value.employeeCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`,
-                errCode: Enumeration.ErrorCode.Duplicate,
-              });
+              hasError = true;
             }
+          }
+
+          if (hasError == true) {
+            this.validateResult.push({
+              isValid: false,
+              error: Resource.MsgReponse.DuplicateMsgError.format(
+                'Mã nhân viên',
+                `<${value.employeeCode}>`
+              ),
+              errCode: Enumeration.ErrorCode.Duplicate,
+            });
           }
         }
       );

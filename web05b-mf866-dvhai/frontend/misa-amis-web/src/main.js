@@ -3,7 +3,6 @@ import 'devextreme/dist/css/dx.light.css';
 //import
 import Vue from 'vue';
 import store from './store';
-import Enumeration from './scripts/common/enumeration';
 import Bus from '../EventBus.js';
 import App from './App.vue';
 import axios from 'axios';
@@ -12,11 +11,9 @@ import VueMask from 'v-mask';
 import money from 'v-money';
 import router from './router';
 import vueDebounce from 'vue-debounce';
-import Resource from './scripts/common/resource';
 
 //use
 
-Vue.use(Resource);
 Vue.use(Bus);
 Vue.use(VueAxios, axios);
 Vue.use(VueMask, { masked: false, placeholder: 'false' });
@@ -48,7 +45,6 @@ Vue.use(vueDebounce, {
 Vue.config.productionTip = false;
 
 new Vue({
-  Enumeration,
   router,
   store,
   render: (h) => h(App),

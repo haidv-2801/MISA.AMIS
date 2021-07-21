@@ -1,3 +1,15 @@
+.popup__form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-index-midplus);
+}
+
 .popup__form {
   display: flex;
   flex-direction: column;
@@ -5,20 +17,12 @@
   height: 615px;
   background-color: #fff;
   width: 900px;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-  position: fixed;
-  margin: auto;
   box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
-  z-index: var(--z-index-mid);
-  transition: all .2s;
 }
 
 .icon-src {
   cursor: pointer;
-  background: url("../../../img/Sprites.64af8f61.svg") no-repeat;
+  background: url('../../../img/Sprites.64af8f61.svg') no-repeat;
 }
 
 .form__head {
@@ -72,13 +76,13 @@
 }
 
 .body__topleft {
-  padding-right:13px;
+  padding-right: 13px;
   flex: 1;
   height: 100%;
 }
 
 .body__topright {
-  padding-left:13px;
+  padding-left: 13px;
   flex: 1;
   height: 100%;
 }
@@ -153,4 +157,8 @@
   position: relative;
   width: 100%;
   border-top: 1px solid #e0e0e0;
+}
+
+.group__button--right {
+  display: flex;
 }

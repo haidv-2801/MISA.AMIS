@@ -35,7 +35,9 @@
 
 <script>
 import EmployeeAPI from "../../../api/coponents/EmployeeAPI";
+import { SET_LOADER, SET_PAGENUMBER } from '../../../store/mutation-types';
 import Tooltip from "../../common/vtooltip/Tooltip.vue";
+
 export default {
   name: "FilterBar",
   components: {
@@ -104,7 +106,7 @@ export default {
      * DVHAI 05/07/2021
      */
     refreshGrid() {
-      this.$store.commit("SET_LOADER", true);
+      this.$store.commit(SET_LOADER, true);
       this.$emit("filterTable");
     },
 
@@ -114,7 +116,7 @@ export default {
      */
     filterTable() {
       //Nếu lọc dữ liệu thì reset lại pagenumber
-      this.$store.commit("SET_PAGENUMBER", 1);
+      this.$store.commit(SET_PAGENUMBER, 1);
       this.$emit("filterTable");
     },
   },
@@ -127,11 +129,6 @@ export default {
      * DVHAI 05/07/2021
      */
     filterData() {
-      if (this.filterData.length > 0) {
-        this.visibleClearIcon = true;
-      } else {
-        this.visibleClearIcon = false;
-      }
       this.$emit("changeValueFilterString", this.filterData);
     },
   },

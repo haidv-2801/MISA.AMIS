@@ -2,7 +2,7 @@
   <div id="pagination" class="main__pagination">
     <div class="pagi__left">
       <span class="total-page">
-        Tổng số: <b>{{ currentTotalRecord }}</b> bản ghi
+        Tổng số: <b>{{ this.currentTotalRecord }}</b> bản ghi
       </span>
     </div>
     <div class="pagi__right">
@@ -86,6 +86,9 @@
 
 <script>
 import DropdownNormal from '../common/vcombobox/DropdownNormal.vue';
+import {mapGetters} from 'vuex'
+import * as mut from '../../store/mutation-types';
+
 export default {
   name: 'Paging',
   components: {
@@ -116,8 +119,8 @@ export default {
      */
     btnClick(index) {
       if (this.currentPageNumber != index) {
-        this.$store.commit('SET_LOADER', true);
-        this.$store.commit('SET_PAGENUMBER', index);
+        this.$store.commit(mut.SET_LOADER, true);
+        this.$store.commit(mut.SET_PAGENUMBER, index);
         this.filterTable();
       }
     },
@@ -128,7 +131,7 @@ export default {
      */
     prePage() {
       if (this.currentPageNumber > 1) {
-        this.$store.commit('SET_PAGENUMBER', this.currentPageNumber - 1);
+        this.$store.commit(mut.SET_PAGENUMBER, this.currentPageNumber - 1);
         this.filterTable();
       }
     },
@@ -139,7 +142,7 @@ export default {
      */
     nextPage() {
       if (this.currentPageNumber < this.currentTotalPage) {
-        this.$store.commit('SET_PAGENUMBER', this.currentPageNumber + 1);
+        this.$store.commit(mut.SET_PAGENUMBER, this.currentPageNumber + 1);
         this.filterTable();
       }
     },
@@ -157,6 +160,14 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      currentTotalRecord: mut.GET_TOTALRECORD,
+      currentPageNumber: mut.GET_PAGENUMBER,
+      currentPageSize: mut.GET_PAGESIZE,
+      currentTotalPage: mut.GET_TOTALPAGE,
+      currentMaximumPage: mut.GET_MAXIMUMPAGE
+    }),
+
     //Hiển thị ba dấu chấm trái
     dotLeftVisivle() {
         return this.currentPageNumber - (this.currentMaximumPage - 1) > 0 && this.currentTotalPage > this.currentMaximumPage;
@@ -168,33 +179,6 @@ export default {
       || (this.currentPageNumber < this.currentMaximumPage && this.currentPageNumber + this.currentMaximumPage - 1 >= this.currentTotalPage 
       && this.currentMaximumPage <= this.currentTotalPage);
     },
-
-    //Trang hiện tại
-    currentTotalRecord() {
-      return this.$store.state.pagination.totalRecord;
-    },
-
-    //Trang hiện tại
-    currentPageNumber() {
-      return this.$store.state.pagination.pageNumber;
-    },
-
-    //Số bản ghi trên 1 trang
-    currentPageSize() {
-      return this.$store.state.pagination.pageSize;
-    },
-
-    //Tổng số trang hiện có
-    currentTotalPage() {
-      // return this.$store.state.pagination.totalPage;
-      return this.$store.state.pagination.totalPage;
-    },
-
-    //Tổng số trang hiện có
-    currentMaximumPage() {
-      return this.$store.state.pagination.maximumPage;
-    },
-    //end
 
     //list page number
     listPages() {
@@ -250,17 +234,6 @@ export default {
     },
   },
   watch: {
-    //Theo dõi trang hiện tại thay đổi
-    // currentPageNumber: function(value) {
-    //   this.$store.commit('SET_LOADER', true);
-    //   this.$store.commit('SET_PAGENUMBER', value);
-    // },
-
-    //Theo dõi số bản ghi trên 1 trang thay đổi
-    // currentPageSize: function(value) {
-    //   this.$store.commit('SET_PAGESIZE', value);
-    // },
-
     //tracking props data and clone to a new one
     data: {
       deep: true,

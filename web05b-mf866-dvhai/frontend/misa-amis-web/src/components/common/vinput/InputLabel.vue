@@ -1,16 +1,16 @@
 <template>
-  <div
+  <!-- <div
     :tooltiptext="validation.error"
     :style="{ '--isVisible': [validation.isValid ? 'hidden' : 'visible'] }"
     class="row__item tooltip"
-  >
+  > -->
+  <Tooltip class="row__item" :customData="validation.message">
     <label :for="data.inputId" v-if="data.isRequired"
       >{{ data.labelText }}<span class="color-red"> *</span></label
     >
     <label v-else>{{ data.labelText }}</label>
 
     <DxDateBox
-      class="focus"
       :displayFormat="'dd/MM/yyyy'"
       :placeholder="'DD/MM/YYYY'"
       :useMaskBehavior="true"
@@ -40,22 +40,26 @@
       v-model="cloneModel"
       v-mask="data.mask"
     />
-  </div>
+  </Tooltip>
+  <!-- </div> -->
 </template>
 
 <script>
 import validate from '../../../scripts/common/validator.js';
 import CommonFn from '../../../scripts/common/common.js';
+import Tooltip from '@/components/common/vtooltip/Tooltip';
 
 // dx datebox
 import 'devextreme/dist/css/dx.light.css';
 import DxDateBox from 'devextreme-vue/date-box';
-import Enumeration from '../../../scripts/common/enumeration.js';
+import { GET_HASVALIDATE } from '../../../store/mutation-types.js';
+import Resource from '../../../scripts/common/resource.js';
 
 export default {
   name: 'InputLabel',
   components: {
     DxDateBox,
+    Tooltip,
   },
   props: {
     data: {
@@ -70,9 +74,7 @@ export default {
       default: () => {},
     },
   },
-  created() {
-    this.cloneModel = JSON.parse(JSON.stringify(this.model));
-  },
+  created() {},
   data() {
     return {
       //Chỉ cần focus lần đầu là true
@@ -84,15 +86,8 @@ export default {
       //(1-hiển thị lỗi tooltip, 0-hiển thị lỗi tooltip)
       tooltipScale: 1,
 
-      //Trạng thái validate
-      validation: {
-        isValid: true,
-        error: '',
-        errCode: Enumeration.ErrorCode.Valid,
-      },
-
       //Sao chép model sang một biến mới
-      cloneModel: JSON.parse(JSON.stringify(this.model)),
+      cloneModel: null,
 
       //Định dạng tiền
       money: {
@@ -106,6 +101,8 @@ export default {
 
       //Có thể validate khôgn
       canValidate: false,
+
+      validation: {...validate.defaultResponse}
     };
   },
   methods: {
@@ -129,12 +126,15 @@ export default {
       //Lấy origindata
       if (this.visited == false) {
         this.visited = true;
-        this.$bus.emit('updateOriginModel', this.data.inputId, CommonFn.hash(this.cloneModel));
+        this.$bus.emit(
+          'updateOriginModel',
+          this.data.inputId,
+          CommonFn.hash(this.cloneModel)
+        );
       }
 
       //Ẩn tooltip
       this.tooltipScale = 0;
-      // this.changeUniqueState(true);
     },
 
     /**
@@ -147,58 +147,23 @@ export default {
     },
 
     /**
-     * Validate duy nhất
-     * DVHAI 06/07/2021
-     */
-    validateUnique(key, value) {
-      this.$emit('checkUnique', key, value);
-    },
-
-    /**
      * Validate tùy chỉnh
      * DVHAI 06/07/2021
      */
     validate() {
-      this.canValidate = false;
-      for (const x of this.data.validation) {
-        var cons = x.split(':'),
-          validateResult =
-            cons.length > 1
-              ? validate[cons[0]](this.cloneModel)(cons[1])
-              : validate[x](this.cloneModel);
-
-        let errMsg = this.data.labelText + ' ' + validateResult.msg;
-
-        //raise error
-        this.setValidateError(
-          validateResult.isValid,
-          errMsg,
-          validateResult.errCode
-        );
-
-        //error fire
-        if (!validateResult.isValid) {
-          this.$bus.emit('validateResult', this.validation);
-          break;
-        }
-      }
-    },
-
-    /**
-     * Cài đặt lỗi validate
-     * DVHAI 06/07/2021
-     */
-    setValidateError(isValid, errorMsg, errCode) {
-      this.validation.isValid = isValid;
-      this.validation.error = errorMsg;
-      this.validation.errCode = errCode;
+      this.validation = validate.execute(this.cloneModel, this.data.validation);
+      this.validation.message = this.validation.message.format(this.data.labelText);
+      if(!this.validation.isValid) this.$bus.emit('validateResult', this.validation);
     },
   },
   computed: {
+    /**
+     * Nếu kích hoạt validate tất cả bằng false thì phụ thuộc vào chính nó
+     * ngược lại phụ thuộc vào chính nó
+     * DVHAI 06/07/2021
+     */
     hasValidate() {
-      //Nếu kích hoạt validate tất cả bằng false thì phụ thuộc vào chính nó
-      //ngược lại phụ thuộc vào chính nó
-      return this.$store.state.hasValidate;
+      return this.$store.getters[GET_HASVALIDATE];
     },
   },
   watch: {
@@ -210,13 +175,17 @@ export default {
       if (this.canValidate) this.validate();
 
       //Nếu là tiền thì format
-      let moneyNumber = this.cloneModel || '';
+      let valueFormatted = this.cloneModel || '';
 
-      if (this.data.dataType == 'money')
-        moneyNumber = CommonFn.onlyNumber(moneyNumber);
+      switch (this.data.dataType) {
+        case Resource.DataTypeColumn.Money:
+          valueFormatted = CommonFn.onlyNumber(valueFormatted);
+          break;
+      }
 
       //Thay đổi giá trị model thật bên ngoài component
-      this.$emit('changeValueInput', this.data.inputId, moneyNumber);
+      this.$emit('changeValueInput', this.data.inputId, valueFormatted);
+      console.log('clonemodel');
     },
 
     /**
@@ -227,6 +196,7 @@ export default {
       deep: true,
       immediate: true,
       handler: function(value) {
+        console.log('model');
         this.cloneModel = JSON.parse(JSON.stringify(value));
       },
     },

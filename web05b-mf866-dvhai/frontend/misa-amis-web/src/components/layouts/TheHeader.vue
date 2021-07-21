@@ -24,21 +24,33 @@
         Đỗ Văn Hải
       </div>
       <!-- icon arrow down -->
-      <div class="icon icon-chervon-down"></div>
+      <Tooltip :customData="'Xem thêm'">
+        <div class="icon icon-chervon-down"></div>
+      </Tooltip>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  GET_TOGGLESIDEBAR,
+  SET_TOGGLESIDEBAR,
+} from '../../store/mutation-types';
+
+import Tooltip from '@/components/common/vtooltip/Tooltip';
+
 export default {
   name: 'Header',
+  components: {
+    Tooltip,
+  },
   methods: {
     /**
      * Hàm thay đổi trạng thái của sidebar
      * DVHAI 05/07/2021
      */
     changeSidebarState() {
-      this.$store.commit('TOGGLE_SIDEBAR');
+      this.$store.commit(SET_TOGGLESIDEBAR);
     },
   },
   computed: {
@@ -47,7 +59,7 @@ export default {
      * DVHAI 06/07/2021
      */
     isCollapsedSidebar() {
-      return this.$store.state.expandedSidebar;
+      return this.$store.getters[GET_TOGGLESIDEBAR];
     },
   },
 };
