@@ -1,82 +1,95 @@
-import Enumeration from "./enumeration.js";
-import Resource from "./resource";
+import CommonFn from './common.js';
+import Enumeration from './enumeration.js';
+import Resource from './resource';
 
 var validate = validate || {};
 
-validate.required = (value) => {
-  value = value || "";
+validate.defaultResponse = {
+  isValid: true,
+  message: '',
+  code: Enumeration.ErrorCode.Valid
+}
 
-  let isValid = false,
-    msg = "",
-    errCode = Enumeration.ErrorCode.Valid;
-    debugger; // eslint-disable-line no-debugger
-  isValid = value.toString().trim().length > 0;
-  if (!isValid) {
-    msg = Resource.MsgReponse.EmptyMsgError;
-    errCode = Enumeration.ErrorCode.Empty;
+validate.required = (value) => {
+  let result = {...validate.defaultResponse},
+      notEmpty = value.toString().trim().length > 0;
+      debugger; // eslint-disable-line no-debugger
+  if(!notEmpty) {
+    result.isValid = notEmpty;
+    result.message = Resource.MsgReponse.EmptyMsgError;
+    result.code = Enumeration.ErrorCode.Empty;
   }
 
-  return {
-    isValid,
-    msg,
-    errCode,
-  };
+  return result;
 };
 
 validate.email = (value) => {
-  let isValid = true,
-    msg = "",
-    errCode = Enumeration.ErrorCode.Valid;
+  let result = {...validate.defaultResponse},
+      notEmpty = value.toString().trim().length > 0,
+      isEmail = CommonFn.validateEmail(value);
 
-  if (!value)
-    return {
-      isValid,
-      msg,
-      errCode,
-    };
-
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  isValid = re.test(String(value).toLowerCase());
- 
-  if (!isValid) {
-    msg = Resource.MsgReponse.FormatInValidError;
-    errCode = Enumeration.ErrorCode.IncorrectFormat;
+  if(!notEmpty) return result;
+  if (!isEmail) {
+    result.isValid = isEmail;
+    result.message = Resource.MsgReponse.FormatInValidError;
+    result.code = Enumeration.ErrorCode.IncorrectFormat;
   }
 
-  return {
-    isValid,
-    msg,
-    errCode,
-  };
+  return result;
 };
 
 
 validate.maxLength = (value) => {
   return (max) => {
-    let isValid = true,
-      msg = "",
-      errCode = Enumeration.ErrorCode.Valid;
-
-    if (!value)
-      return {
-        isValid,
-        msg,
-        errCode,
-      };
-
-    isValid = value.toString().trim().length <= max;
-    if (!isValid) {
-      msg = `độ dài tối đa ${max} kí tự.`;
-      errCode = Enumeration.ErrorCode.InValid;
+    let result = {...validate.defaultResponse},
+        notEmpty = value.toString().length > 0,
+        isValid = value.toString().length <= max;
+      
+    if(!notEmpty) return result;
+    if(!isValid) {
+      result.isValid = isValid;
+      result.message = Resource.MsgReponse.MaxLengthMsgError.format(`${max}`);
     }
 
-    return {
-      isValid,
-      msg,
-      errCode,
-    };
+    return result;
   };
 };
 
+validate.minLength = (value) => {
+  return (min) => {
+    let result = {...validate.defaultResponse},
+        notEmpty = value.toString().length > 0,
+        isValid = value.toString().length >= min;
+      
+    if(!notEmpty) return result;
+    if(!isValid) {
+      result.isValid = isValid;
+      result.message = Resource.MsgReponse.MinLengthMsgError.format(`${min}`);
+    }
+
+    return result;
+  };
+};
+
+validate.execute = (value, options) => {
+  debugger; // eslint-disable-line no-debugger
+  if(!Array.isArray(options)) return;
+
+  value = value || '';
+  let result = {...validate.defaultResponse};
+
+  for(const mode of options) {
+    let modeSlit = mode.split(':'),
+        type = modeSlit[0],
+        data = modeSlit[1];
+
+    if(result.isValid && type && validate[type]) {
+      if(data) result = validate[type](value)(data);
+      else result = validate[type](value);
+    }
+  }
+
+  return result;
+};
 
 export default validate;

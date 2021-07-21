@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import Resource from '../../../scripts/common/resource';
 import BaseDialog from "./BaseDialog.vue";
 
 export default {
@@ -36,7 +37,7 @@ export default {
   },
   data() {
     return {
-      dataReceive: null,
+      dataReceive: {error: Resource.MsgReponse.MisaMsgError},
       isShow: false,
     };
   },
@@ -47,7 +48,6 @@ export default {
      */
     openPopup(data) {
       this.dataReceive = data;
-      document.querySelector("#overlay").style.zIndex = "3001";
       this.isShow = true;
     },
 
@@ -57,7 +57,6 @@ export default {
      */
     closePopup() {
       this.isShow = false;
-      document.querySelector("#overlay").style.zIndex = "1000";
     },
 
     /**
@@ -66,13 +65,12 @@ export default {
      */
     cancel() {
       this.closePopup();
-      //alert success
     },
   },
 
   computed: {
     propertyName() {
-      return this.dataReceive.error;
+      return this.dataReceive.message;
     },
 
     propertyValue() {

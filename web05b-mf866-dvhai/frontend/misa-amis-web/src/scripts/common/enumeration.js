@@ -43,10 +43,10 @@ Enumeration.Keyboard = {
 
 //Mã lỗi
 Enumeration.ErrorCode = {
-    Valid: 3,   // Dữ liệ hợp lệ
     InValid: 0, // Dũ liệu không hợp lệ
     IncorrectFormat: 1, // Không đúng định dạng
     Empty: 2,   // Rỗng
+    Valid: 3,   // Dữ liệ hợp lệ
     Duplicate: 4 // Trùng
 };
 

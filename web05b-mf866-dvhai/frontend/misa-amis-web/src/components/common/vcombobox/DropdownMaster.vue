@@ -1,6 +1,6 @@
 <template>
- <DxSelectBox
-    class="m-select-box focus tooltip"
+  <DxSelectBox
+    class="m-select-box focus"
     :style="[!validation.isValid ? { '--color-border-input': 'red' } : {}]"
     :placeholder="cloneDataSource.placeHolder"
     :noDataText="'Không có dữ liệu cần tìm'"
@@ -11,7 +11,9 @@
     :height="cloneDataSource.style.height"
     :data-source="cloneDataSource.data.value"
     :onFocusIn="focus"
-    :onFocusOut="blur"
+    :onInput="test"
+    :onFocusOut="validate"
+    :searchTimeout="0"
     v-model="cloneModel"
   />
 
@@ -20,8 +22,8 @@
 <script>
 import DxSelectBox from 'devextreme-vue/select-box';
 import validate from '../../../scripts/common/validator.js';
-import Enumeration from '../../../scripts/common/enumeration';
 import CommonFn from '../../../scripts/common/common.js';
+
 export default {
   name: 'DropdownMaster',
   components: {
@@ -40,6 +42,7 @@ export default {
   created() {
     //Sao chép model sang một biến mới
     this.cloneModel = JSON.parse(JSON.stringify(this.model));
+
     //Sao chép datasource sang một biến mới
     this.cloneDataSource = JSON.parse(JSON.stringify(this.data));
   },
@@ -52,20 +55,19 @@ export default {
       visited: false,
 
       //Sao chép model sang một biến mới
-      cloneModel: JSON.parse(JSON.stringify(this.model)),
-      //Sao chép datasource sang một biến mới
-      cloneDataSource: JSON.parse(JSON.stringify(this.data)),
+      cloneModel: '',
 
-      //Trạng thái validate
-      validation: {
-        isValid: true,
-        error: '',
-        errCode: Enumeration.ErrorCode.Valid,
-      },
+      //Sao chép datasource sang một biến mới
+      cloneDataSource: [],
+
+      validation: {...validate.defaultResponse}
     };
   },
 
   methods: {
+    test(e) {
+      console.log(e);
+    },
     /**
      * DVHAI 06/07/2021
      */
@@ -73,68 +75,33 @@ export default {
       //Khi focus lần đầu sẽ lấy giá trị ban đầu ra ngoài để check thay đổi dữ liệu
       if (this.visited == false) {
         this.visited = true;
-
-        //Chuyển sang kiểu lưu trữ
-        let index = this.cloneDataSource.data.value.indexOf(this.cloneModel),
-          value = this.cloneDataSource.data.key[index];
-
+        let value = this.getStoreModel();
         this.$bus.emit(
           'updateOriginModel',
           this.data.data.inputId,
           CommonFn.hash(value)
         );
       }
-      this.validation.isValid = true;
     },
 
-
-    /**
-     * Blur input
-     * DVHAI 06/07/2021
-     */
-    blur() {
-      //validate tùy chỉnh
-        this.validate();
-    },
-
-    /**
+     /**
      * Validate tùy chỉnh
      * DVHAI 06/07/2021
      */
     validate() {
-      //Duyệt trên mảng validation có cac thuộc tính validate như required..
-      for (const x of this.data.validation) {
-        var cons = x.split(':'),
-          validateResult =
-            cons.length > 1
-              ? validate[cons[0]](this.cloneModel)(cons[1])
-              : validate[x](this.cloneModel);
-
-        let errMsg = validateResult.msg.format(this.data.data.labelText);
-
-        //Cài đặt lỗi
-        this.setValidateError(
-          validateResult.isValid,
-          errMsg,
-          validateResult.errCode
-        );
-
-        //Nếu có lỗi thêm kết quả lỗi bên component cha
-        if (!validateResult.isValid) {
-          this.$bus.emit('validateResult', this.validation);
-          break;
-        }
-      }
+      this.validation = validate.execute(this.cloneModel, this.data.validation);
+      this.validation.message = this.validation.message.format(this.data.data.labelText);
+      if(!this.validation.isValid) this.$bus.emit('validateResult', this.validation);
     },
 
     /**
-     * Cài đặt lỗi validate
+     * Lấy dữu liệu dạng lưu trữ
      * DVHAI 06/07/2021
      */
-    setValidateError(isValid, errorMsg, errCode) {
-      this.validation.isValid = isValid;
-      this.validation.error = errorMsg;
-      this.validation.errCode = errCode;
+    getStoreModel() {
+      let index = this.cloneDataSource.data.value.indexOf(this.cloneModel),
+        value = this.cloneDataSource.data.key[index];
+      return value || '';
     },
   },
 
@@ -145,10 +112,7 @@ export default {
      * DVHAI 07/07/2021
      */
     cloneModel() {
-      //Ánh xạ dữ liệu hiển thị sang dữ liệu lưu trữ
-      let index = this.cloneDataSource.data.value.indexOf(this.cloneModel),
-        value = this.cloneDataSource.data.key[index];
-
+      let value = this.getStoreModel();
       this.$emit('changeValueInput', this.cloneDataSource.data.inputId, value);
     },
 
@@ -170,19 +134,14 @@ export default {
       handler: function(value) {
         if (value) {
           this.cloneDataSource = JSON.parse(JSON.stringify(value));
-
-          //Lấy vị trí của bên hiển thị và ánh xạ sang mã
-          let index = value.data.value.indexOf(this.cloneModel),
-            val = value.data.key[index];
-
+          let val = this.getStoreModel();
           //Thay đổi giá trị model bên component cha
           this.$emit('changeValueInput', value.data.inputId, val);
         }
       },
     },
   },
-  computed: {
-  },
+  computed: {},
 };
 </script>
 

@@ -24,7 +24,7 @@ export default {
   props: {
     customData: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data() {
@@ -41,10 +41,26 @@ export default {
      * Hàm xác định vị trí tooltip
      * NVTOAN 10/07/2021
      */
-    async displayTooltip(e) {
-      let tooltip = e.target.closest(".tooltip");
-      let tooltipSize = tooltip.getBoundingClientRect();
-      await setTimeout(() => {
+    displayTooltip(e) {
+      //Lấy tooltip content
+      let el = e.target.closest('.tooltip-ver1'),
+          elDimension = el.getBoundingClientRect(),
+          content = el.querySelector('.tooltip__content'),
+          contentDimension = content.getBoundingClientRect(),
+          contentLeftPos = elDimension.left + (elDimension.width / 2),
+          contentTopPos = elDimension.top + elDimension.height + 2;
+
+      //Xét vị trí cho tooltip
+      if(contentLeftPos + contentDimension.width >= window.innerWidth) 
+        contentLeftPos = contentLeftPos -  contentDimension.width;
+      
+      if(contentTopPos + contentDimension.height >= window.innerHeight) 
+        contentTopPos = contentTopPos -  contentDimension.height;
+
+      content.style.left = contentLeftPos + "px";
+      content.style.top = contentTopPos + "px";
+      
+      setTimeout(() => {
         this.showTooltip = true;
       }, 0.1);
       setTimeout(() => {
@@ -77,18 +93,16 @@ export default {
   },
 };
 </script>
-<style>
-.tooltip {
-  position: relative;
-}
+<style scoped>
 .tooltip__content {
-  position: absolute;
+  height: 28px !important;
+  display: flex;
+  align-items: center;
+  position: fixed;
   white-space: nowrap;
   background: rgb(56, 55, 55);
-  padding: 5px;
-  z-index: 10000;
-  font-family: 'NotosanRegular';
-  font-weight: 300 !important;
+  padding: 7px;
+  z-index: var(--z-index-extraplus);
   color: #fff;
   font-size: 12px;
 }

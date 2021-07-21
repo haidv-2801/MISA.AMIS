@@ -55,7 +55,8 @@
 </template>
 
 <script>
-import Tooltip from '@/components/common/vtooltip/Tooltip';
+import Tooltip from '@/components/common/vtooltip/Tooltip'
+import { GET_TOGGLESIDEBAR, SET_TOGGLESIDEBAR } from '../../store/mutation-types.js'
 
 export default {
   name: 'Sidebar',
@@ -83,7 +84,7 @@ export default {
      * DVHAI 05/07/2021
      */
     changeSidebarState() {
-      this.$store.commit('TOGGLE_SIDEBAR');
+      this.$store.commit(SET_TOGGLESIDEBAR);
     },
 
     /**
@@ -114,7 +115,7 @@ export default {
   },
   computed: {
     isCollapsed() {
-      return this.$store.state.expandedSidebar;
+      return this.$store.getters[GET_TOGGLESIDEBAR];
     },
   },
   watch: {

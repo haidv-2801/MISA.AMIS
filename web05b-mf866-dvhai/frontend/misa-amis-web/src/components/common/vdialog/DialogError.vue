@@ -18,24 +18,20 @@
 </template>
 
 <script>
+import Resource from '../../../scripts/common/resource';
 import BaseDialog from "./BaseDialog.vue";
 
 export default {
   name: "DialogError",
   props: {
-    data: {
-      type: Object,
-      default: () => {
-        return { propertyName: "", propertyValue: "" };
-      },
-    },
   },
   components: {
     BaseDialog,
   },
   data() {
     return {
-      dataReceive: null,
+      dataReceive: {error: Resource.MsgReponse.MisaMsgError},
+
       //Trạng thái của popup
       isShow: false,
     };
@@ -48,7 +44,6 @@ export default {
     openPopup(data) {
       this.dataReceive = data;
       this.isShow = true;
-      document.querySelector("#overlay").style.zIndex = "3001";
     },
 
     /**
@@ -57,7 +52,11 @@ export default {
      */
     closePopup() {
       this.isShow = false;
-      document.querySelector("#overlay").style.zIndex = "1000";
+
+      let inValidEls = document.querySelectorAll('.notValidControl');
+      if (inValidEls.length > 0) {
+        inValidEls[0].focus();
+      }
     },
 
     /**

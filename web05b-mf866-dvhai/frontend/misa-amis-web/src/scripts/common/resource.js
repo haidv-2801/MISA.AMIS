@@ -4,6 +4,8 @@ var Resource = Resource || {};
 //Thông báo trả về
 Resource.MsgReponse = {
   EmptyMsgError: "{0} không được để trống",
+  MaxLengthMsgError: "{1} chỉ chứa tối đa {0} kí tự",
+  MinLengthMsgError: "{1} chỉ chứa tối thiểu {0} kí tự",
   FormatInValidError: "{0} không đúng định dạng",
   MisaMsgError: "Lỗi, vui lòng liên hệ MISA",
   EditMsgSuccess: "Sửa {0} thành công",
@@ -15,6 +17,7 @@ Resource.MsgReponse = {
 
 Resource.MsgQuestion = {
     MsgConfirmDelete: "Bạn có thực sự muốn xóa {0} {1} không?",
+    MsgConfirmDataChanged: "Dữ liệu đã bị thay đổi, bạn có muốn cất không?"
 }
 
 //Kiểu toast
@@ -28,6 +31,7 @@ Resource.DataTypeColumn = {
   Number: 'Number',
   Date: 'Date',
   Enum: 'Enum',
+  Money: 'Money'
 };
 
 //Các method khi gọi ajax

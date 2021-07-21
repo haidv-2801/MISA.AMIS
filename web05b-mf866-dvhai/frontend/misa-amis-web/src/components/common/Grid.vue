@@ -413,7 +413,7 @@ table img {
 }
 
 .u-options {
-  z-index: 1000;
+  z-index: var(--z-index-low);
   position: fixed;
   top: 0;
   outline: none;

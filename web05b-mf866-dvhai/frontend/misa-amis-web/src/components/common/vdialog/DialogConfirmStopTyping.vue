@@ -4,7 +4,7 @@
       <div class="icon-question icon-48 icon-src"></div>
     </template>
     <template #alert__text>
-      <span>Dữ liệu đã bị thay đổi, bạn có muốn cất không?</span>
+      <span>{{message}}</span>
     </template>
     <template #alert__foot>
       <div class="group__button">
@@ -37,6 +37,7 @@
 
 <script>
 import BaseDialog from './BaseDialog.vue';
+import Resource from '../../../scripts/common/resource'
 
 export default {
   name: 'DialogConfirmStopTyping',
@@ -54,6 +55,7 @@ export default {
   data() {
     return {
       isShow: false,
+      Resource: Resource
     };
   },
   methods: {
@@ -72,7 +74,6 @@ export default {
      */
     openPopup() {
       this.isShow = true;
-      document.querySelector('#overlay').style.zIndex = '3001';
       this.invokeOverlay();
     },
 
@@ -82,7 +83,6 @@ export default {
      */
     closePopup() {
       this.isShow = false;
-      document.querySelector('#overlay').style.zIndex = '1000';
       this.invokeOverlay();
     },
 
@@ -113,6 +113,11 @@ export default {
       this.$bus.emit('displayOverlay');
     },
   },
+  computed: {
+    message() {
+      return this.Resource.MsgQuestion.MsgConfirmDataChanged;
+    }
+  }
 };
 </script>
 
